@@ -17,6 +17,12 @@ A reboot of the freeCodeCamp open source Chapter project
 
 ---
 
+
+```sh
+git clone
+```
+
+
 FOLDER=/Volumes/Data/Projects
 
 NAME=Bookmarks2
