@@ -17,11 +17,13 @@ A reboot of the freeCodeCamp open source Chapter project
 
 ---
 
-
 ```sh
 git clone git@github.com:tomnoland/Chapter2.git
 ```
 
+```sh
+cd ~/Chapter2
+```
 
 FOLDER=/Volumes/Data/Projects
 
