@@ -1,0 +1,328 @@
+generator client {
+  provider      = "prisma-client-js"
+  // since we support Docker as well as 'manual' we need to add additional
+  // targets
+  // TODO: specify single target via env()
+  binaryTargets = ["native", "linux-musl", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgres://postgres:password@localhost:5432/chapter"
+}
+
+model chapters {
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
+  id            Int             @id @default(autoincrement())
+  name          String
+  description   String
+  category      String
+  city          String
+  region        String
+  country       String
+  logo_url      String?
+  banner_url    String?
+  calendar_id   String?
+  chat_url      String?
+  creator_id    Int
+  events        events[]
+  user_bans     user_bans[]
+  chapter_users chapter_users[]
+  chapter_tags  chapter_tags[]
+  venues        venues[]
+}
+
+model sessions {
+  id      Int   @id @default(autoincrement())
+  user_id Int   @unique
+  user    users @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model google_tokens {
+  id            Int     @id @default(autoincrement())
+  email         String  @unique
+  access_token  String
+  refresh_token String
+  expiry_date   BigInt
+  is_valid      Boolean @default(true)
+}
+
+model chapter_users {
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt
+  joined_date     DateTime
+  user_id         Int
+  chapter_id      Int
+  chapter_role_id Int
+  subscribed      Boolean
+  user            users         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  chapter         chapters      @relation(fields: [chapter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  chapter_role    chapter_roles @relation(fields: [chapter_role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([user_id, chapter_id])
+}
+
+model chapter_roles {
+  created_at               DateTime                   @default(now())
+  updated_at               DateTime                   @updatedAt
+  id                       Int                        @id @default(autoincrement())
+  name                     String                     @unique
+  chapter_users            chapter_users[]
+  chapter_role_permissions chapter_role_permissions[]
+}
+
+model chapter_role_permissions {
+  created_at             DateTime            @default(now())
+  updated_at             DateTime            @updatedAt
+  chapter_role_id        Int
+  chapter_permissions_id Int
+  chapter_role           chapter_roles       @relation(fields: [chapter_role_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  chapter_permission     chapter_permissions @relation(fields: [chapter_permissions_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([chapter_role_id, chapter_permissions_id])
+}
+
+model chapter_permissions {
+  created_at               DateTime                   @default(now())
+  updated_at               DateTime                   @updatedAt
+  id                       Int                        @id @default(autoincrement())
+  name                     String                     @unique
+  chapter_role_permissions chapter_role_permissions[]
+}
+
+model chapter_tags {
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  chapter_id Int
+  tag_id     Int
+  chapter    chapters @relation(fields: [chapter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tag        tags     @relation(fields: [tag_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([chapter_id, tag_id])
+}
+
+model event_sponsors {
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  sponsor_id Int
+  event_id   Int
+  event      events   @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  sponsor    sponsors @relation(fields: [sponsor_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([sponsor_id, event_id])
+}
+
+model event_tags {
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  event_id   Int
+  tag_id     Int
+  event      events   @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tag        tags     @relation(fields: [tag_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([event_id, tag_id])
+}
+
+model events {
+  created_at        DateTime               @default(now())
+  updated_at        DateTime               @updatedAt
+  id                Int                    @id @default(autoincrement())
+  name              String
+  description       String
+  url               String?
+  streaming_url     String?
+  venue_type        events_venue_type_enum @default(Physical)
+  start_at          DateTime
+  ends_at           DateTime
+  canceled          Boolean                @default(false)
+  capacity          Int
+  invite_only       Boolean                @default(false)
+  image_url         String
+  venue_id          Int?
+  chapter_id        Int
+  calendar_event_id String?
+  chapter           chapters               @relation(fields: [chapter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  venue             venues?                @relation(fields: [venue_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sponsors          event_sponsors[]
+  event_tags        event_tags[]
+  event_users       event_users[]
+}
+
+model event_roles {
+  created_at             DateTime                 @default(now())
+  updated_at             DateTime                 @updatedAt
+  id                     Int                      @id @default(autoincrement())
+  name                   String                   @unique
+  event_role_permissions event_role_permissions[]
+  event_users            event_users[]
+}
+
+model event_role_permissions {
+  created_at          DateTime          @default(now())
+  updated_at          DateTime          @updatedAt
+  event_role_id       Int
+  event_permission_id Int
+  event_role          event_roles       @relation(fields: [event_role_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  event_permission    event_permissions @relation(fields: [event_permission_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([event_role_id, event_permission_id])
+}
+
+model event_permissions {
+  created_at             DateTime                 @default(now())
+  updated_at             DateTime                 @updatedAt
+  id                     Int                      @id @default(autoincrement())
+  name                   String                   @unique
+  event_role_permissions event_role_permissions[]
+}
+
+model event_users {
+  created_at     DateTime         @default(now())
+  updated_at     DateTime         @updatedAt
+  joined_date    DateTime         @default(now())
+  user_id        Int
+  event_id       Int
+  event_role_id  Int
+  attendance_id  Int
+  subscribed     Boolean
+  title          String[]
+  user           users            @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  event          events           @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  event_role     event_roles      @relation(fields: [event_role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  attendance    attendance        @relation(fields: [attendance_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  event_reminder event_reminders?
+
+  @@id([user_id, event_id])
+}
+
+model event_reminders {
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  user_id    Int
+  event_id   Int
+  remind_at  DateTime
+  notifying  Boolean     @default(false)
+  event_user event_users @relation(fields: [user_id, event_id], references: [user_id, event_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([user_id, event_id])
+}
+
+model attendance {
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  event_users event_users[]
+}
+
+model sponsors {
+  created_at     DateTime         @default(now())
+  updated_at     DateTime         @updatedAt
+  id             Int              @id @default(autoincrement())
+  name           String
+  website        String
+  logo_path      String
+  type           String
+  event_sponsors event_sponsors[]
+}
+
+model tags {
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @updatedAt
+  id           Int          @id @default(autoincrement())
+  name         String       @unique
+  chapter_tags chapter_tags[]
+  event_tags   event_tags[]
+  venue_tags   venue_tags[]
+}
+
+model user_bans {
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  user_id    Int
+  chapter_id Int
+  chapter    chapters @relation(fields: [chapter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user       users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([user_id, chapter_id])
+}
+
+model instance_permissions {
+  created_at                DateTime                    @default(now())
+  updated_at                DateTime                    @updatedAt
+  id                        Int                         @id @default(autoincrement())
+  name                      String                      @unique
+  instance_role_permissions instance_role_permissions[]
+}
+
+model instance_role_permissions {
+  created_at             DateTime             @default(now())
+  updated_at             DateTime             @updatedAt
+  instance_role_id       Int
+  instance_permission_id Int
+  instance_role          instance_roles       @relation(fields: [instance_role_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  instance_permission    instance_permissions @relation(fields: [instance_permission_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([instance_role_id, instance_permission_id])
+}
+
+model instance_roles {
+  created_at                DateTime                    @default(now())
+  updated_at                DateTime                    @updatedAt
+  id                        Int                         @id @default(autoincrement())
+  name                      String                      @unique
+  instance_role_permissions instance_role_permissions[]
+  users                     users[]
+}
+
+model users {
+  created_at       DateTime        @default(now())
+  updated_at       DateTime        @updatedAt
+  id               Int             @id @default(autoincrement())
+  name             String
+  image_url        String?
+  email            String          @unique
+  auto_subscribe   Boolean         @default(true)
+  user_bans        user_bans[]
+  user_chapters    chapter_users[]
+  instance_role_id Int
+  instance_role    instance_roles  @relation(fields: [instance_role_id], references: [id])
+  user_events      event_users[]
+  session          sessions?
+}
+
+model venue_tags {
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  venue_id   Int
+  tag_id     Int
+  venue      venues @relation(fields: [venue_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tag        tags     @relation(fields: [tag_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([venue_id, tag_id])
+}
+
+model venues {
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  id             Int      @id @default(autoincrement())
+  name           String
+  street_address String?
+  city           String
+  postal_code    String
+  region         String
+  country        String
+  latitude       Float?
+  longitude      Float?
+  events         events[]
+  venue_tags     venue_tags[]
+  chapter_id     Int
+  chapter        chapters @relation(fields: [chapter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+enum events_venue_type_enum {
+  Physical
+  Online
+  PhysicalAndOnline
+}

@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?><database name="chapter" schema="public" type="PostgreSQL - 14.8 (Debian 14.8-1.pgdg120+1)">
+   <sequences>
+      <sequence increment="1" name="attendance_id_seq" startValue="1"/>
+      <sequence increment="1" name="chapter_permissions_id_seq" startValue="1"/>
+      <sequence increment="1" name="chapter_roles_id_seq" startValue="1"/>
+      <sequence increment="1" name="chapters_id_seq" startValue="1"/>
+      <sequence increment="1" name="event_permissions_id_seq" startValue="1"/>
+      <sequence increment="1" name="event_roles_id_seq" startValue="1"/>
+      <sequence increment="1" name="events_id_seq" startValue="1"/>
+      <sequence increment="1" name="google_tokens_id_seq" startValue="1"/>
+      <sequence increment="1" name="instance_permissions_id_seq" startValue="1"/>
+      <sequence increment="1" name="instance_roles_id_seq" startValue="1"/>
+      <sequence increment="1" name="sessions_id_seq" startValue="1"/>
+      <sequence increment="1" name="sponsors_id_seq" startValue="1"/>
+      <sequence increment="1" name="tags_id_seq" startValue="1"/>
+      <sequence increment="1" name="users_id_seq" startValue="1"/>
+      <sequence increment="1" name="venues_id_seq" startValue="1"/>
+   </sequences>
+   <tables>
+      <table name="_prisma_migrations" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="36" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="checksum" nullable="false" remarks="" size="64" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="2" name="finished_at" nullable="true" remarks="" size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="migration_name" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="logs" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="5" name="rolled_back_at" nullable="true" remarks="" size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="6" name="started_at" nullable="false" remarks="" size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="7" name="applied_steps_count" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="_prisma_migrations_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="attendance" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="true" defaultValue="nextval('attendance_id_seq'::regclass)" digits="0" id="2" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="attendance_id" foreignKey="event_users_attendance_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="event_users"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="attendance_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="attendance_name_key" unique="true">
+            <column ascending="true" name="name"/>
+         </index>
+      </table>
+      <table name="chapter_permissions" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="true" defaultValue="nextval('chapter_permissions_id_seq'::regclass)" digits="0" id="2" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="chapter_permissions_id" foreignKey="chapter_role_permissions_chapter_permissions_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="chapter_role_permissions"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="chapter_permissions_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="chapter_permissions_name_key" unique="true">
+            <column ascending="true" name="name"/>
+         </index>
+      </table>
+      <table name="chapter_role_permissions" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="chapter_role_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="chapter_role_permissions_chapter_role_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="chapter_roles"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="chapter_permissions_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="chapter_role_permissions_chapter_permissions_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="chapter_permissions"/>
+         </column>
+         <primaryKey column="chapter_role_id" sequenceNumberInPK="1"/>
+         <primaryKey column="chapter_permissions_id" sequenceNumberInPK="2"/>
+         <index name="chapter_role_permissions_pkey" unique="true">
+            <column ascending="true" name="chapter_role_id"/>
+            <column ascending="true" name="chapter_permissions_id"/>
+         </index>
+      </table>
+      <table name="chapter_roles" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="true" defaultValue="nextval('chapter_roles_id_seq'::regclass)" digits="0" id="2" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="chapter_role_id" foreignKey="chapter_role_permissions_chapter_role_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="chapter_role_permissions"/>
+            <child column="chapter_role_id" foreignKey="chapter_users_chapter_role_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="chapter_users"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="chapter_roles_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="chapter_roles_name_key" unique="true">
+            <column ascending="true" name="name"/>
+         </index>
+      </table>
+      <table name="chapter_tags" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="chapter_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="chapter_tags_chapter_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="chapters"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="tag_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="chapter_tags_tag_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="tags"/>
+         </column>
+         <primaryKey column="chapter_id" sequenceNumberInPK="1"/>
+         <primaryKey column="tag_id" sequenceNumberInPK="2"/>
+         <index name="chapter_tags_pkey" unique="true">
+            <column ascending="true" name="chapter_id"/>
+            <column ascending="true" name="tag_id"/>
+         </index>
+      </table>
+      <table name="chapter_users" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="2" name="joined_date" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="user_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="chapter_users_user_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="users"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="chapter_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="chapter_users_chapter_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="chapters"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="chapter_role_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="chapter_users_chapter_role_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="chapter_roles"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="subscribed" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="user_id" sequenceNumberInPK="1"/>
+         <primaryKey column="chapter_id" sequenceNumberInPK="2"/>
+         <index name="chapter_users_pkey" unique="true">
+            <column ascending="true" name="user_id"/>
+            <column ascending="true" name="chapter_id"/>
+         </index>
+      </table>
+      <table name="chapters" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="true" defaultValue="nextval('chapters_id_seq'::regclass)" digits="0" id="2" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="chapter_id" foreignKey="chapter_tags_chapter_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="chapter_tags"/>
+            <child column="chapter_id" foreignKey="chapter_users_chapter_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="chapter_users"/>
+            <child column="chapter_id" foreignKey="events_chapter_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="events"/>
+            <child column="chapter_id" foreignKey="user_bans_chapter_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="user_bans"/>
+            <child column="chapter_id" foreignKey="venues_chapter_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="venues"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="description" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="category" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="city" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="region" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="country" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="banner_url" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="calendar_id" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="chat_url" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="creator_id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="logo_url" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="chapters_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="event_permissions" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="true" defaultValue="nextval('event_permissions_id_seq'::regclass)" digits="0" id="2" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="event_permission_id" foreignKey="event_role_permissions_event_permission_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="event_role_permissions"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="event_permissions_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="event_permissions_name_key" unique="true">
+            <column ascending="true" name="name"/>
+         </index>
+      </table>
+      <table name="event_reminders" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="user_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="user_id" foreignKey="event_reminders_user_id_event_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="event_users"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="event_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="event_id" foreignKey="event_reminders_user_id_event_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="event_users"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="4" name="remind_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="5" name="notifying" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="user_id" sequenceNumberInPK="1"/>
+         <primaryKey column="event_id" sequenceNumberInPK="2"/>
+         <index name="event_reminders_pkey" unique="true">
+            <column ascending="true" name="user_id"/>
+            <column ascending="true" name="event_id"/>
+         </index>
+      </table>
+      <table name="event_role_permissions" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="event_role_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="event_role_permissions_event_role_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="event_roles"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="event_permission_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="event_role_permissions_event_permission_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="event_permissions"/>
+         </column>
+         <primaryKey column="event_role_id" sequenceNumberInPK="1"/>
+         <primaryKey column="event_permission_id" sequenceNumberInPK="2"/>
+         <index name="event_role_permissions_pkey" unique="true">
+            <column ascending="true" name="event_role_id"/>
+            <column ascending="true" name="event_permission_id"/>
+         </index>
+      </table>
+      <table name="event_roles" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="true" defaultValue="nextval('event_roles_id_seq'::regclass)" digits="0" id="2" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="event_role_id" foreignKey="event_role_permissions_event_role_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="event_role_permissions"/>
+            <child column="event_role_id" foreignKey="event_users_event_role_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="event_users"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="event_roles_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="event_roles_name_key" unique="true">
+            <column ascending="true" name="name"/>
+         </index>
+      </table>
+      <table name="event_sponsors" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="sponsor_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="event_sponsors_sponsor_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="sponsors"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="event_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="event_sponsors_event_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="events"/>
+         </column>
+         <primaryKey column="sponsor_id" sequenceNumberInPK="1"/>
+         <primaryKey column="event_id" sequenceNumberInPK="2"/>
+         <index name="event_sponsors_pkey" unique="true">
+            <column ascending="true" name="sponsor_id"/>
+            <column ascending="true" name="event_id"/>
+         </index>
+      </table>
+      <table name="event_tags" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="event_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="event_tags_event_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="events"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="tag_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="event_tags_tag_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="tags"/>
+         </column>
+         <primaryKey column="event_id" sequenceNumberInPK="1"/>
+         <primaryKey column="tag_id" sequenceNumberInPK="2"/>
+         <index name="event_tags_pkey" unique="true">
+            <column ascending="true" name="event_id"/>
+            <column ascending="true" name="tag_id"/>
+         </index>
+      </table>
+      <table name="event_users" numRows="75" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="user_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="user_id" foreignKey="event_reminders_user_id_event_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="event_reminders"/>
+            <parent column="id" foreignKey="event_users_user_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="users"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="event_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="event_id" foreignKey="event_reminders_user_id_event_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="event_reminders"/>
+            <parent column="id" foreignKey="event_users_event_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="events"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="event_role_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="event_users_event_role_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="event_roles"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="attendance_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="event_users_attendance_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="attendance"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="subscribed" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="title" nullable="true" remarks="" size="2147483647" type="_text" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="8" name="joined_date" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <primaryKey column="user_id" sequenceNumberInPK="1"/>
+         <primaryKey column="event_id" sequenceNumberInPK="2"/>
+         <index name="event_users_pkey" unique="true">
+            <column ascending="true" name="user_id"/>
+            <column ascending="true" name="event_id"/>
+         </index>
+      </table>
+      <table name="events" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="true" defaultValue="nextval('events_id_seq'::regclass)" digits="0" id="2" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="event_id" foreignKey="event_sponsors_event_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="event_sponsors"/>
+            <child column="event_id" foreignKey="event_tags_event_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="event_tags"/>
+            <child column="event_id" foreignKey="event_users_event_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="event_users"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="description" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="url" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="streaming_url" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="'Physical'::events_venue_type_enum" digits="0" id="7" name="venue_type" nullable="false" remarks="" size="2147483647" type="events_venue_type_enum" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="8" name="start_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="9" name="ends_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="10" name="canceled" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="capacity" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="12" name="invite_only" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="image_url" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="venue_id" nullable="true" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="events_venue_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="venues"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="chapter_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="events_chapter_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="chapters"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="calendar_event_id" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="events_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="google_tokens" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('google_tokens_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="email" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="access_token" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="refresh_token" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="expiry_date" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="5" name="is_valid" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="google_tokens_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="google_tokens_email_key" unique="true">
+            <column ascending="true" name="email"/>
+         </index>
+      </table>
+      <table name="instance_permissions" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="true" defaultValue="nextval('instance_permissions_id_seq'::regclass)" digits="0" id="2" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="instance_permission_id" foreignKey="instance_role_permissions_instance_permission_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="instance_role_permissions"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="instance_permissions_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="instance_permissions_name_key" unique="true">
+            <column ascending="true" name="name"/>
+         </index>
+      </table>
+      <table name="instance_role_permissions" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="instance_role_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="instance_role_permissions_instance_role_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="instance_roles"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="instance_permission_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="instance_role_permissions_instance_permission_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="instance_permissions"/>
+         </column>
+         <primaryKey column="instance_role_id" sequenceNumberInPK="1"/>
+         <primaryKey column="instance_permission_id" sequenceNumberInPK="2"/>
+         <index name="instance_role_permissions_pkey" unique="true">
+            <column ascending="true" name="instance_role_id"/>
+            <column ascending="true" name="instance_permission_id"/>
+         </index>
+      </table>
+      <table name="instance_roles" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="true" defaultValue="nextval('instance_roles_id_seq'::regclass)" digits="0" id="2" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="instance_role_id" foreignKey="instance_role_permissions_instance_role_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="instance_role_permissions"/>
+            <child column="instance_role_id" foreignKey="users_instance_role_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="users"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="instance_roles_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="instance_roles_name_key" unique="true">
+            <column ascending="true" name="name"/>
+         </index>
+      </table>
+      <table name="sessions" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('sessions_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="user_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="sessions_user_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="users"/>
+         </column>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="sessions_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="sessions_user_id_key" unique="true">
+            <column ascending="true" name="user_id"/>
+         </index>
+      </table>
+      <table name="sponsors" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="true" defaultValue="nextval('sponsors_id_seq'::regclass)" digits="0" id="2" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="sponsor_id" foreignKey="event_sponsors_sponsor_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="event_sponsors"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="website" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="logo_path" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="type" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="sponsors_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="tags" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="true" defaultValue="nextval('tags_id_seq'::regclass)" digits="0" id="2" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="tag_id" foreignKey="chapter_tags_tag_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="chapter_tags"/>
+            <child column="tag_id" foreignKey="event_tags_tag_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="event_tags"/>
+            <child column="tag_id" foreignKey="venue_tags_tag_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="venue_tags"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="tags_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="tags_name_key" unique="true">
+            <column ascending="true" name="name"/>
+         </index>
+      </table>
+      <table name="user_bans" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="user_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="user_bans_user_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="users"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="chapter_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="user_bans_chapter_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="chapters"/>
+         </column>
+         <primaryKey column="user_id" sequenceNumberInPK="1"/>
+         <primaryKey column="chapter_id" sequenceNumberInPK="2"/>
+         <index name="user_bans_pkey" unique="true">
+            <column ascending="true" name="user_id"/>
+            <column ascending="true" name="chapter_id"/>
+         </index>
+      </table>
+      <table name="users" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="true" defaultValue="nextval('users_id_seq'::regclass)" digits="0" id="2" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="user_id" foreignKey="chapter_users_user_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="chapter_users"/>
+            <child column="user_id" foreignKey="event_users_user_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="event_users"/>
+            <child column="user_id" foreignKey="sessions_user_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="sessions"/>
+            <child column="user_id" foreignKey="user_bans_user_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="user_bans"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="email" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="instance_role_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="users_instance_role_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="instance_roles"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="image_url" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="7" name="auto_subscribe" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="users_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="users_email_key" unique="true">
+            <column ascending="true" name="email"/>
+         </index>
+      </table>
+      <table name="venue_tags" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="venue_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="venue_tags_venue_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="venues"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="tag_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="venue_tags_tag_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="tags"/>
+         </column>
+         <primaryKey column="venue_id" sequenceNumberInPK="1"/>
+         <primaryKey column="tag_id" sequenceNumberInPK="2"/>
+         <index name="venue_tags_pkey" unique="true">
+            <column ascending="true" name="venue_id"/>
+            <column ascending="true" name="tag_id"/>
+         </index>
+      </table>
+      <table name="venues" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="3" id="0" name="created_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="updated_at" nullable="false" remarks="" size="26" type="timestamp" typeCode="93"/>
+         <column autoUpdated="true" defaultValue="nextval('venues_id_seq'::regclass)" digits="0" id="2" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
+            <child column="venue_id" foreignKey="events_venue_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="events"/>
+            <child column="venue_id" foreignKey="venue_tags_venue_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="venue_tags"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="street_address" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="city" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="postal_code" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="region" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="country" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="9" name="latitude" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="10" name="longitude" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="chapter_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="venues_chapter_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="chapters"/>
+         </column>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="venues_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+   </tables>
+</database>

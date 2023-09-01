@@ -1,0 +1,59 @@
+version: "3.7"
+services:
+
+  db:
+    image: postgres:14
+    container_name: chapter_postgres_standalone
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-password}
+      - POSTGRES_DB=${DB_NAME:-chapter}
+    networks:
+      - chapter
+    ports:
+      - "5432:5432"
+
+  adminer:
+    image: adminer:4
+    container_name: chapter_adminer_standalone
+    environment:
+      - ADMINER_DESIGN=mancave
+    restart: always
+    networks:
+      - chapter
+    ports:
+      - 8080:8080
+      
+#  schemaspy:
+#    image: schemaspy/schemaspy:snapshot
+#    volumes:
+#      - ./schemaspy/target:/output
+#      - ./schemaspy/config:/config
+#    container_name: "schemaspy_local"
+#    command: [
+#      "-configFile",
+#      "/config/schemaspy.properties", 
+#      "-imageformat",
+#      "svg"
+#    ]
+#    depends_on:
+#      - db
+#    networks:
+#      - chapter
+      
+#  migration:
+#   depends_on:
+#    - db
+#   networks:
+#      - chapter
+#   command: cd db/prisma && npx prisma migrate dev --name init
+#   environment:
+#      - DB_URL=db
+#      - DB_PORT=${DB_PORT:-5432}
+#      - DB_USER=${DB_USER:-postgres}
+#      - DB_PASSWORD=${DB_PASSWORD:-password}
+#      - DB_NAME=${DB_NAME:-chapter}
+
+networks:
+  chapter:
+    name: chapter_postgres_and_adminer_standalone

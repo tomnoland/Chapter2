@@ -1,0 +1,407 @@
+Notes:
+################################################################################
+
+docker pull postman/newman:5;
+
+docker run -t postman/newman:5 run "https://www.getpostman.com/collections/8a0c9bc08f062d12dcda"
+
+docker run -t  -v /Users/tomn/Chapter2/Postman/generate-postman-collection:/etc/newman postman/newman:5 run collection.json --reporters junit --reporter-junit-export="newman-report.xml"
+docker run -t  -v /Users/tomn/Chapter2/Postman/generate-postman-collection:/etc/newman postman/newman:5 run collection.json --reporters json --reporter-json-export="newman-report.json"
+
+
+
+https://jsonformatter.curiousconcept.com/#
+
+
+
+"postman container" "create request"
+
+https://siddharth-lakhara.medium.com/generate-postman-collections-using-node-js-68fcf425d823
+
+git clone https://github.com/siddharth-lakhara/generate-postman-collection.git
+
+
+
+
+
+################################################################################
+
+https://jsonformatter.curiousconcept.com/#
+
+{
+   "id":"5debd4f7-25f8-5b27-df34-396b2b627fe8",
+   "name":"newmanTest",
+   "description":"Makes four requests to HTTPBin (httpbin.org) and tests Newman",
+   "order":[
+      "095bf9de-13f6-1c72-6a7a-243fea5d2bee",
+      "34bea9ba-d86e-41f5-90d1-71f39041e147",
+      "719f6f82-951e-6591-7354-a2093598c3e4",
+      "92b60418-7aad-0576-be74-8f58dc354435"
+   ],
+   "folders":[
+      
+   ],
+   "timestamp":1438249510749,
+   "owner":"61671",
+   "remoteLink":"",
+   "public":false,
+   "requests":[
+      {
+         "id":"095bf9de-13f6-1c72-6a7a-243fea5d2bee",
+         "headers":"",
+         "url":"http://httpbin.org/get?lol=true",
+         "preRequestScript":"",
+         "pathVariables":{
+            
+         },
+         "method":"GET",
+         "data":[
+            
+         ],
+         "dataMode":"params",
+         "version":2,
+         "tests":"var data = JSON.parse(responseBody);\ntests[\"Response contains params\"] = data.args.lol === \"true\";",
+         "currentHelper":"normal",
+         "helperAttributes":{
+            
+         },
+         "time":1438250908857,
+         "name":"GET with URL Params",
+         "description":"Simple GET request with URL Parameters",
+         "collectionId":"5debd4f7-25f8-5b27-df34-396b2b627fe8",
+         "responses":[
+            
+         ]
+      },
+      {
+         "id":"34bea9ba-d86e-41f5-90d1-71f39041e147",
+         "headers":"Content-Type: application/json\n",
+         "url":"http://httpbin.org/post",
+         "pathVariables":{
+            
+         },
+         "preRequestScript":"",
+         "method":"POST",
+         "collectionId":"5debd4f7-25f8-5b27-df34-396b2b627fe8",
+         "data":[
+            
+         ],
+         "dataMode":"raw",
+         "name":"POST with JSON body",
+         "description":"",
+         "descriptionFormat":"html",
+         "time":1438250049106,
+         "version":2,
+         "responses":[
+            
+         ],
+         "tests":"var data = JSON.parse(responseBody);\ntests[\"Check POST param in response\"] = data.json.something === \"cool\";",
+         "currentHelper":"normal",
+         "helperAttributes":{
+            
+         },
+         "rawModeData":"{\n    \"something\": \"cool\"\n}"
+      },
+      {
+         "id":"719f6f82-951e-6591-7354-a2093598c3e4",
+         "headers":"",
+         "url":"http://httpbin.org/delete",
+         "pathVariables":{
+            
+         },
+         "preRequestScript":"",
+         "method":"DELETE",
+         "collectionId":"5debd4f7-25f8-5b27-df34-396b2b627fe8",
+         "data":[
+            
+         ],
+         "dataMode":"params",
+         "name":"DELETE request",
+         "description":"",
+         "descriptionFormat":"html",
+         "time":1438250164765,
+         "version":2,
+         "responses":[
+            
+         ],
+         "tests":"tests[\"Status code is 200\"] = responseCode.code === 200;",
+         "currentHelper":"normal",
+         "helperAttributes":{
+            
+         }
+      },
+      {
+         "id":"92b60418-7aad-0576-be74-8f58dc354435",
+         "headers":"",
+         "url":"http://httpbin.org/put",
+         "pathVariables":{
+            
+         },
+         "preRequestScript":"",
+         "method":"PUT",
+         "collectionId":"5debd4f7-25f8-5b27-df34-396b2b627fe8",
+         "data":[
+            {
+               "key":"quotient",
+               "value":"223",
+               "type":"text",
+               "enabled":true
+            }
+         ],
+         "dataMode":"urlencoded",
+         "name":"PUT with form data",
+         "description":"",
+         "descriptionFormat":"html",
+         "time":1438250517000,
+         "version":2,
+         "responses":[
+            
+         ],
+         "tests":"var data = JSON.parse(responseBody);\ntests[\"Test form data\"] = data.form.quotient === \"223\";",
+         "currentHelper":"normal",
+         "helperAttributes":{
+            
+         }
+      }
+   ]
+}
+################################################################################
+
+################################################################################
+
+################################################################################
+################################################################################
+
+
+
+
+
+
+
+
+
+https://www.section.io/engineering-education/dockerized-prisma-postgres-api/#further-reading
+
+SELECT *
+FROM information_schema.columns;
+
+select * from "Todo";
+
+SELECT version();
+
+select * from public."Todo";
+
+-- Table: public.Todo
+
+-- DROP TABLE IF EXISTS public."Todo";
+
+CREATE TABLE IF NOT EXISTS public."Todo"
+(
+    id integer NOT NULL DEFAULT nextval('"Todo_id_seq"'::regclass),
+    "createdAt" timestamp(3) without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" timestamp(3) without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    title text COLLATE pg_catalog."default" NOT NULL,
+    description text COLLATE pg_catalog."default",
+    completed boolean NOT NULL DEFAULT false,
+    CONSTRAINT "Todo_pkey" PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Todo"
+    OWNER to postgres;
+
+################################################################################
+
+pgAdmin:
+http://localhost:5555/browser/
+
+Login:
+pgadmin4@pgadmin.org
+admin
+
+Register - Server:
+Name: anything
+Connection:
+Username: postgres
+All other fields: postgres
+
+################################################################################
+
+  url      = "postgresql://postgres:postgres@postgres:5432/Todo?schema=public"
+
+npx prisma migrate dev
+
+################################################################################
+
+PROJECT: Chapter
+
+docker pull schemaspy/schemaspy:6.2.4
+
+docker run -d -p 5432:5432 ghusta/postgres-world-db:2.10
+
+docker run -v "./target:/output" -v "./config:/config"  schemaspy/schemaspy:latest -configFile /config/schemaspy.properties  -noimplied -nopages -l
+
+
+cd prisma
+
+npx prisma migrate dev --name init
+
+docker-compose -f docker-compose.postgres.yml up&
+
+DB_USER=postgres
+DB_PASSWORD=password
+DB_NAME=chapter
+DB_URL=localhost
+# If running a local setup make sure to set DB_PORT=5432
+DB_PORT=54320
+DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@${DB_URL}:${DB_PORT}/${DB_NAME}
+DATABASE_URL=postgres://postgres:password@localhost:54320/chapter
+
+
+################################################################################
+
+docker-compose -f docker-compose.postgres.yml up&
+
+docker save schemaspy:6.2.4 | gzip > schemaspy_6_2_4.tar.gz
+
+docker save adminer:4 | gzip > adminer_4.tar.gz
+
+docker save postgres:14 | gzip > postgres_14.tar.gz
+
+docker load --input postgres_14.tar.gz
+
+docker load --input adminer_4.tar.gz
+
+docker load --input schemaspy_6_2_4.tar.gz
+
+################################################################################
+
+git clone https://github.com/freeCodeCamp/chapter.git
+
+cd /Users/tomn/chapter
+
+cp .env.example .env
+
+sed -i '' 's/netcat/netcat-traditional/' server.Dockerfile
+
+sed -i '' 's/debian-openssl-1.1.x/debian-openssl-3.0.x/' server/prisma/schema.prisma
+
+npm install typescript
+
+npm run
+
+npm run db:migrate:dev
+
+npm run db:reset
+
+cd
+
+/Users/tomn/chapter_extras/CleanAll.sh
+
+docker-compose up&
+
+open -a "Google Chrome" file:///Users/tomn/chapter_extras/index.html
+
+
+################################################################################
+
+LIST DOCKER RESOURCES:
+
+echo "********************************** IMAGES ************************************"
+# echo "******************************************************"
+docker images -a
+echo "******************************************************************************"
+echo "********************************* CONTAINERS *********************************"
+docker ps -a
+echo "******************************************************************************"
+echo "********************************** VOLUMES ************************************"
+# echo "******************************************************"
+docker volume ls
+echo "******************************************************************************"
+echo "********************************* NETWORKS *********************************"
+docker network ls
+echo "******************************************************************************"
+
+################################################################################
+
+CLEAN ALL DOCKER RESOURCES:
+
+docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+docker rmi -f $(docker images -a -q)
+docker volume rm $(docker volume ls -q)
+docker network rm $(docker network ls -q)
+
+
+
+
+################################################################################
+
+
+
+
+
+
+
+docker-compose docker-compose.override.yml up
+
+PROJECT_HOME=/Users/tomn/chapter
+
+docker run --name my-own-phpmyadmin -d --link my-mysql:db -p 8081:80 phpmyadmin/phpmyadmin
+
+docker run --name chapter-phppgadmin --network=chapter_default -d --link chapter_db_1:db -p 8081:8080 bitnami/phppgadmin
+
+docker run -d --name phppgadmin4 -p 8090:8080 -p 543:8443 --network=chapter_default -e DATABASE_PORT_NUMBER=54320 bitnami/phppgadmin:latest
+
+
+chapter_default
+
+docker rmi 6fe703415129
+$(docker images 'chapter_client')
+
+
+
+
+brew link node 
+
+    sudo chown -R `whoami`:admin /usr/local/include/node                      
+    sudo chown -R `whoami`:admin /usr/local/bin
+    sudo chown -R `whoami`:admin /usr/local/share
+    sudo chown -R `whoami`:admin /usr/local/lib/dtrace
+
+
+brew link --overwrite node
+
+npm install
+
+npm audit fix
+
+
+docker-compose up
+
+docker rmi chapter_app:latest
+
+
+npm -v
+
+docker container rm $(docker container ls -aq)
+
+
+docker container stop $(docker container ls -aq)
+
+docker build --tag chapter:1.0
+
+npm install next react react-dom
+
+docker container run -it -d --publish 3000:3000 --name my-chapter-client chapter_client:latest
+
+docker container run -it -d --name my-chapter-client chapter_client:latest
+
+docker exec -it my-chapter-client /bin/sh
+
+http://localhost:3000/
+
+open -a "Google Chrome" http://stackoverflow.com http://wikipedia.org
+
+
+
