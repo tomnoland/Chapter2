@@ -1,7 +1,7 @@
 {
     "Servers": {
         "1": {
-            "Name": "xxx",
+            "Name": "PrismaExample",
             "Group": "Servers",
             "Host": "postgres",
             "Port": 5432,
